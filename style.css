@@ -1,0 +1,90 @@
+*, 
+*:before, 
+*:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    height: 100%;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #A30B37;
+    color: #FCFCFF;
+}
+
+.header-links {
+    display: flex;
+    font-size: 18px;
+    color: #FCFCFF;
+    gap: 32px;
+    list-style-type: none;
+    overflow: hidden;
+}
+
+a {
+    color: #000000;
+    text-decoration: none;
+}
+
+.content {
+    display: flex;
+    flex: auto;
+    flex-wrap: wrap;
+    background-color: #D3D3D3;
+    justify-content: center;
+    align-items: center;
+}
+
+.start {
+    display: flex;
+    justify-self: center;
+    align-self: center;
+}
+
+button {
+    width: 272px;
+    height: 68px;
+    font-size: 32px;
+    background-color: #C6C8EE;
+    border: none;
+    color: #FCFCFF;
+    text-decoration: none;
+    border-radius: 8px;
+}
+
+.square {
+    display: flex;
+    color: gray;
+    background-color: #D3D3D3;
+}
+
+.colored-square {
+    display: flex;
+}
+
+.new-grid {
+    width: 136px;
+    height: 34px;
+    font-size: 16px;
+    background-color: #77DD77;
+    border: none;
+    color: #FCFCFF;
+    text-decoration: none;
+    border-radius: 8px;
+    justify-self: end;
+}
