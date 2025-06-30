@@ -33,6 +33,9 @@ ENDIF
 let content = document.querySelector('.content');
 let contentCompStyles = window.getComputedStyle(content);
 
+// initialize header
+displayNewGridBtn();
+
 // start
 let btnStart = document.createElement('button');
 btnStart.textContent = 'START';
@@ -40,7 +43,6 @@ content.appendChild(btnStart);
 btnStart.addEventListener('click', () => {
     content.removeChild(btnStart);
     generateGrid(16);
-    displayNewGridBtn();
 });
 
 function generateGrid(sideLength) {
@@ -51,12 +53,28 @@ function generateGrid(sideLength) {
         square.style.height = (parseInt(contentCompStyles.height) / sideLength) + 'px';
         square.style.width = (parseInt(contentCompStyles.width) / sideLength) + 'px';
         square.style.flex = `1 1 ${square.style.width}`;
-        // color when mouse hover over square, execute only once
-        square.addEventListener('mouseenter', () => {
-            colorRandom(square);
-        }, {once: true});
 
         content.appendChild(square);
+        // color when mouse hover over square, execute only once
+        let coloring = new Promise((resolve, reject) => {
+            square.addEventListener('mouseenter', () => {
+                colorRandom(square);
+                resolve();
+            }, {once: true});
+            reject();
+        })
+
+        coloring.then(
+            square.addEventListener('mouseenter', () => {
+            darken(square);
+        }));
+        // opacity/fully colored solution
+        /*
+        // darken every time user interact with square up to 10 times (100% opacity)
+        square.addEventListener('mouseenter', () => {
+            darken(square);
+        })
+        */
     }
 }
 
@@ -77,6 +95,10 @@ function colorRandom(element) {
     randomColor = `#` + randomColorVal.toString(16);
 
     element.style.backgroundColor = randomColor;
+
+    // opacity/fully colored solution
+    // element.style.opacity = 0.0;
+
     // store color for darkening
     element.id = randomColor;
 
@@ -85,26 +107,42 @@ function colorRandom(element) {
 }
 
 function darken(element) {
+    // opacity/fully colored solution
+    /*
+    opacityVal = parseFloat(element.style.opacity);
+    opacityVal += 0.1;
+    element.style.opacity = `${opacityVal}`;
+    */
+
+    // computed/black solution
     // get RBG color value of element
     let RGB = element.style.backgroundColor;
     let r, g, b;
 
     // isolate red, green, blue values
-    values = RGB.split(',');
-    for (color of values) {
-        values[color] = pareInt(values[color]);
+    let values = RGB.split(',');
+    for (let i = 0; i < values.length; i++) {
+        // use regex to extract number/s from strings in array
+        const match = values[i].match(/\d+/g);
+        // convert string value to number
+        values[i] = Number(match[0]);
     }
-    r = values[0];
-    r -= 10;
-    r.toString(16);
-    g = values[1];
-    g -= 10;
-    g.toString(16);
-    b = values[2];
-    b -= 10;
-    b.toString(16);
 
-    element.style.backgroundColor = `# + ${r} + ${g} + ${b}`;
+    // calculate r, g, b subtrahends from original random rgb value (before darkening)
+    let rSubtrahend = (parseInt(element.id.slice(1, 3), 16)) / 10;
+    let gSubtrahend = (parseInt(element.id.slice(3, 5), 16)) / 10;
+    let bSubtrahend = (parseInt(element.id.slice(5), 16)) / 10;
+
+    r = values[0];
+    r -= rSubtrahend;
+
+    g = values[1];
+    g -= gSubtrahend;
+
+    b = values[2];
+    b -= bSubtrahend;
+
+    element.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 }
 
 // new grid functionality
@@ -123,6 +161,10 @@ function displayNewGridBtn() {
     newGridBtn.classList.add('new-grid')
 
     let header = document.querySelector('.header');
+    // empty div to center layout
+    let emptyDiv = document.createElement('div');
+    emptyDiv.classList.add('empty-div');
+    header.prepend(emptyDiv);
     header.appendChild(newGridBtn);
 }
 

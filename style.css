@@ -88,3 +88,9 @@ button {
     border-radius: 8px;
     justify-self: end;
 }
+
+.empty-div {
+    width: 136px;
+    height: 34px;
+    border-radius: 8px;
+}
